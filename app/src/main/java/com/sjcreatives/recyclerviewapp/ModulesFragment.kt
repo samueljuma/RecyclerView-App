@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sjcreatives.recyclerviewapp.databinding.FragmentModulesBinding
 
@@ -13,6 +14,7 @@ class ModulesFragment : Fragment() {
 
     private lateinit var binding: FragmentModulesBinding
     private lateinit var adapter: ModulesAdapter
+    private lateinit var viewModel: ModulesViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,19 +24,12 @@ class ModulesFragment : Fragment() {
 
         adapter = ModulesAdapter()
 
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        //Data
-        var listOfModules = mutableListOf<Module>()
-
-        for (i in 1..100) { // This will iterate 11 times
-            listOfModules.add(Module(i, "Module $i"))
-        }
-
+//        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel = ViewModelProvider(this)[ModulesViewModel::class.java]
         binding.modulesRecyclerView.adapter = adapter
         binding.modulesRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        adapter.submitList(listOfModules)
+        adapter.submitList(viewModel.getListOfModules())
 
         return binding.root
     }
