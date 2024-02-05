@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sjcreatives.recyclerviewapp.databinding.FragmentModulesBinding
 
@@ -24,12 +25,18 @@ class ModulesFragment : Fragment() {
 
         adapter = ModulesAdapter()
 
-//        binding.lifecycleOwner = viewLifecycleOwner
+        binding.lifecycleOwner = viewLifecycleOwner
+
         viewModel = ViewModelProvider(this)[ModulesViewModel::class.java]
         binding.modulesRecyclerView.adapter = adapter
-        binding.modulesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.modulesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
 
-        adapter.submitList(viewModel.getListOfModules())
+        viewModel.listOfModules.observe(viewLifecycleOwner){ listofModules ->
+            listofModules?.let {
+                adapter.submitList(listofModules)
+            }
+        }
+
 
         return binding.root
     }
