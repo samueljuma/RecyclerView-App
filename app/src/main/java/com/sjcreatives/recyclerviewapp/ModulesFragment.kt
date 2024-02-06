@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +24,9 @@ class ModulesFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentModulesBinding.inflate(layoutInflater, container, false)
 
-        adapter = ModulesAdapter()
+        adapter = ModulesAdapter(ModuleClickListener { module ->
+            viewModel.onModuleClicked(module)
+        })
 
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -31,10 +34,17 @@ class ModulesFragment : Fragment() {
         binding.modulesRecyclerView.adapter = adapter
         binding.modulesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2)
 
-        viewModel.listOfModules.observe(viewLifecycleOwner){ listofModules ->
-            listofModules?.let {
-                adapter.submitList(listofModules)
+        viewModel.listOfModules.observe(viewLifecycleOwner){ listOfModules ->
+            listOfModules?.let {
+                adapter.submitList(listOfModules)
             }
+        }
+
+        viewModel.navigateToDetails.observe(viewLifecycleOwner){ module ->
+            module?.let {
+                Toast.makeText(context,"You clicked $it", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
 

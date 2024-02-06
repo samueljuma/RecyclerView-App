@@ -21,5 +21,12 @@ class ModulesViewModel : ViewModel() {
         _listOfModules.value = modules
     }
 
+    private val _navigateToDetails = MutableLiveData<Module>()
+    val navigateToDetails: LiveData<Module> = _navigateToDetails
+
+    fun onModuleClicked (module: Module){
+        _navigateToDetails.value = module
+    }
+
 }
 

@@ -7,13 +7,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sjcreatives.recyclerviewapp.databinding.ModuleItemBinding
 
-class ModulesAdapter : ListAdapter<Module, ModulesAdapter.ViewHolder>(
+class ModulesAdapter(
+    val clickListener: ModuleClickListener
+) : ListAdapter<Module, ModulesAdapter.ViewHolder>(
     ModulesDiffCallBack()
 ) {
     class ViewHolder(val binding: ModuleItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind (module: Module){
+        fun bind (module: Module, clickListener: ModuleClickListener){
             binding.module = module
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
         companion object{
@@ -31,9 +34,13 @@ class ModulesAdapter : ListAdapter<Module, ModulesAdapter.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!)
+        holder.bind(getItem(position)!!, clickListener)
     }
 
+}
+
+class ModuleClickListener (val clickListener: (module : Module) -> Unit) {
+    fun onClick(module: Module) = clickListener(module)
 }
 
 class ModulesDiffCallBack : DiffUtil.ItemCallback<Module>(){

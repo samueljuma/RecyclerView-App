@@ -7,13 +7,19 @@
         <variable
             name="module"
             type="com.sjcreatives.recyclerviewapp.Module" />
+        <variable
+            name="clickListener"
+            type="com.sjcreatives.recyclerviewapp.ModuleClickListener" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
-        android:layout_margin="6dp">
+        android:layout_margin="6dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{() -> clickListener.onClick(module)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
